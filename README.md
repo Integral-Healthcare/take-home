@@ -83,3 +83,12 @@ Once you've completed the challenge, please commit your changes, push them to yo
 We wish you the best of luck and are looking forward to reviewing your solution!
 
 
+## Frequently Asked Questions (FAQs)
+
+**Q: Can I update the `db.json` file?**
+
+A: Absolutely! You're welcome to modify the schema in the `db.json` file to better suit your approach to the challenge. Keeping the schema as is would also be perfectly acceptable.
+
+**Q: Can I integrate Bootstrap or Tailwind CSS frameworks?**
+
+A: Yes, you are free to integrate either Bootstrap or Tailwind. However, keep in mind that the time taken to set these up may consume a chunk of the 90-minute timeframe. This challenge focuses more on your approach and decision-making rather than delivering a perfect solution.
