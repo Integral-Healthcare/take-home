@@ -1,6 +1,6 @@
 # Integral Take-Home Challenge
 
-Welcome to Integral's Take-Home Challenge. Your challenge should you choose to accept it, you will be creating a dynamic tasks page, which is currently static. The page displays a list of tasks broken down into different milestones. In a workflow certification there is a bit of pre-work involved before Integral can get access to sensitive data for certification, and we'd like to start giving our customers visibility into the whole process.
+Welcome to Integral's Take-Home Challenge! Should you choose to accept this challenge, you will be tasked with transforming our currently static tasks page into a dynamic one. The page displays a list of tasks, each falling under different milestones. In the certification workflow, there's a measure of pre-work necessary before Integral gains access to sensitive data for certification. Our goal is to provide our customers with visibility into this entire process.
 
 ## Setup
 
@@ -23,21 +23,7 @@ Here's the initial database schema for your reference, stored in the `db.json` f
         "name": "Security and Legal",
         "status": "COMPLETE"
       },
-      {
-        "id": 2,
-        "name": "Data Upload",
-        "status": "IN_PROGRESS"
-      },
-      {
-        "id": 3,
-        "name": "Integral Analysis",
-        "status": "NOT_STARTED"
-      },
-      {
-        "id": 4,
-        "name": "Data Changes",
-        "status": "NOT_STARTED"
-      }
+      ...
     ],
     "tasks": [
       {
@@ -46,12 +32,7 @@ Here's the initial database schema for your reference, stored in the `db.json` f
         "milestone_id": 2,
         "status": "COMPLETE"
       },
-      {
-        "id": 2,
-        "title": "Upload data dictionary",
-        "milestone_id": 2,
-        "status": "IN_PROGRESS"
-      }
+      ...
     ]
 }
 ```
@@ -78,7 +59,7 @@ This challenge is designed to be completed in about 90 minutes. We're not just l
 Start by editing the file `src/app/page.tsx`.
 
 ## Submission
-Once you've completed the challenge, please commit your changes, push them to your own GitHub repository, and share the link with us. Alternatively emailing a zip file of the repository to john@useintegral.com is acceptable. 
+Once you've completed the challenge, please commit your changes, push them to your own GitHub repository, and share the link with us. Alternatively emailing a zip file of the repository to john@useintegral.com is acceptable.
 
 We wish you the best of luck and are looking forward to reviewing your solution!
 
