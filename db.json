@@ -1,0 +1,38 @@
+{
+    "milestones": [
+      {
+        "id": 1,
+        "name": "Security and Legal",
+        "status": "COMPLETE"
+      },
+      {
+        "id": 2,
+        "name": "Data Upload",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "id": 3,
+        "name": "Integral Analysis",
+        "status": "NOT_STARTED"
+      },
+      {
+        "id": 4,
+        "name": "Data Changes",
+        "status": "NOT_STARTED"
+      }
+    ],
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Upload dataset #1",
+        "milestone_id": 2,
+        "status": "COMPLETE"
+      },
+      {
+        "id": 2,
+        "title": "Upload data dictionary",
+        "milestone_id": 2,
+        "status": "IN_PROGRESS"
+      }
+    ]
+  }
