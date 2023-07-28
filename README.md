@@ -8,6 +8,7 @@ Welcome to Integral's Take-Home Challenge! Should you choose to accept this chal
 2. Run `npm i` to install all necessary dependencies.
 3. Run `npm run dev` to start the development server.
 4. In a separate terminal, run `npm run server` to start the JSON server.
+5. Visit `http://localhost:3000/` in the browser to see the running app.
 
 ## The Challenge
 
