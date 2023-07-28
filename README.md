@@ -59,7 +59,7 @@ Here's the initial database schema for your reference, stored in the `db.json` f
 This project uses json-server to mimic a REST API. It allows us to focus on the front-end part of the challenge without needing to set up a proper database with a schema and migrations.
 
 ## Design Reference
-[Design Reference](design.png)
+<img src="design.png" alt="Design reference image" style="width: 300px;"/>
 
 ## Goals
 - Match the given design as much as possible
@@ -75,7 +75,7 @@ This project uses json-server to mimic a REST API. It allows us to focus on the 
 This challenge is designed to be completed in about 90 minutes. We're not just looking for completion of the task - how you approach the problem and the decisions you make will also be considered.
 
 ## Starting Point
-Start by editing the file `src/app/page.tsx``.
+Start by editing the file `src/app/page.tsx`.
 
 ## Submission
 Once you've completed the challenge, please commit your changes, push them to your own GitHub repository, and share the link with us. Alternatively emailing a zip file of the repository to john@useintegral.com is acceptable. 
