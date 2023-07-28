@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>
-        Welcome to Integral's Challenge!
+        Welcome to the Challenge!
       </h1>
 
       <p>For detailed instructions, please refer to the README file. Start coding by editing <code className={styles.code}>src/app/page.tsx</code></p>
