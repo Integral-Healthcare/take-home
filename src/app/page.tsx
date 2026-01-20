@@ -1,39 +1,64 @@
-import styles from './page.module.css'
+import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}>
-        Welcome to the Challenge!
-      </h1>
+      <h1 className={styles.title}>Intake Review System</h1>
 
-      <p>For detailed instructions, please refer to the README file. Start coding by editing <code className={styles.code}>src/app/page.tsx</code></p>
+      <p className={styles.description}>
+        Welcome to the Integral Take-Home Challenge! Your task is to build a web
+        application for managing client intakes with a review workflow.
+      </p>
 
       <div className={styles.challenge}>
-        <h1 className={styles.title}>
-          Overview
-        </h1>
+        <h2>Challenge Overview</h2>
+        <p>Build a system where:</p>
+        <ul>
+          <li>
+            <strong>Clients</strong> can submit intakes with personal
+            information
+          </li>
+          <li>
+            <strong>Reviewers</strong> can view a queue of submitted intakes
+          </li>
+          <li>
+            Reviewers can see <strong>privileged</strong> (full) or{" "}
+            <strong>redacted</strong> (masked) views of sensitive data
+          </li>
+          <li>Reviewers can update intake status (Pending → In Review → Approved/Rejected)</li>
+          <li>
+            All actions are recorded in an <strong>audit trail</strong>
+          </li>
+        </ul>
 
-        <h2>Milestone: Security and Legal</h2>
-        <p>Status: COMPLETE</p>
+        <h2>Getting Started</h2>
+        <p>
+          The database schema and seed data are already set up. Explore the
+          codebase and implement the features described in the README.
+        </p>
 
-        <h2>Milestone: Data Upload</h2>
-        <p>Status: IN_PROGRESS</p>
-        <div>
-          <h3>Task: Upload dataset #1</h3>
-          <p>Status: COMPLETE</p>
-        </div>
-        <div>
-          <h3>Task: Upload data dictionary</h3>
-          <p>Status: IN_PROGRESS</p>
-        </div>
+        <h2>Navigation</h2>
+        <nav className={styles.nav}>
+          <Link href="/intake" className={styles.link}>
+            Submit Intake →
+          </Link>
+          <Link href="/queue" className={styles.link}>
+            Review Queue →
+          </Link>
+        </nav>
 
-        <h2>Milestone: Integral Analysis</h2>
-        <p>Status: NOT_STARTED</p>
-
-        <h2>Milestone: Data Changes</h2>
-        <p>Status: NOT_STARTED</p>
+        <h2>Demo Users</h2>
+        <p>The database is seeded with two demo users:</p>
+        <ul>
+          <li>
+            <code>client@demo.com</code> - CLIENT role, Organization A
+          </li>
+          <li>
+            <code>reviewer@demo.com</code> - REVIEWER role, Integral (Internal)
+          </li>
+        </ul>
       </div>
     </main>
-  )
+  );
 }
