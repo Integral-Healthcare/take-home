@@ -24,6 +24,14 @@ Build a web app where:
 7. Start the development server: `npm run dev`
 8. Visit `http://localhost:3000/` in your browser
 
+## Design Inspiration
+
+Design references and mockups are available in the `/public/design-inspiration/` folder. You can view them at:
+
+- `http://localhost:3000/design-inspiration/[filename]`
+
+These are provided as optional visual guidance. Feel free to implement your own design approach.
+
 ## Database Schema
 
 The project uses Prisma with SQLite. The schema is defined in `prisma/schema.prisma`:
