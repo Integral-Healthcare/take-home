@@ -13,65 +13,67 @@ async function main() {
 
   // Clear existing data
   await prisma.auditLog.deleteMany();
+  await prisma.document.deleteMany();
   await prisma.intake.deleteMany();
   await prisma.user.deleteMany();
 
   // Create demo users
-  const clientUser = await prisma.user.create({
+  const patientUser = await prisma.user.create({
     data: {
-      email: "client@demo.com",
-      name: "Demo Client",
-      role: "CLIENT",
-      organization: "Organization A",
+      email: "patient@demo.com",
+      name: "Demo Patient",
+      role: "PATIENT",
+      organization: "Trial Participant",
     },
   });
 
   const reviewerUser = await prisma.user.create({
     data: {
       email: "reviewer@demo.com",
-      name: "Demo Reviewer",
+      name: "Dr. Sarah Chen",
       role: "REVIEWER",
-      organization: "Integral (Internal)",
+      organization: "PharmaCorp Trial Coordinator",
     },
   });
 
   console.log("Created users:");
   console.log(
-    `  - ${clientUser.email} (${clientUser.role}, ${clientUser.organization})`
+    `  - ${patientUser.email} (${patientUser.role}, ${patientUser.organization})`
   );
   console.log(
     `  - ${reviewerUser.email} (${reviewerUser.role}, ${reviewerUser.organization})`
   );
 
-  // Create a sample intake for demonstration
+  // Create a sample clinical trial enrollment application
   const sampleIntake = await prisma.intake.create({
     data: {
-      clientName: "John Smith",
-      clientEmail: "john.smith@example.com",
-      clientPhone: "555-123-4567",
-      dateOfBirth: "1985-03-15",
-      ssn: "123-45-6789",
-      description: "Initial intake for healthcare services evaluation",
-      notes: "Patient referred by primary care physician",
+      clientName: "Jane Martinez",
+      clientEmail: "jane.martinez@example.com",
+      clientPhone: "555-987-6543",
+      dateOfBirth: "1978-06-22",
+      ssn: "987-65-4321",
+      description:
+        "Applying for Phase III cardiovascular clinical trial. History of hypertension, currently on beta blockers. Interested in participating to access new treatment options.",
+      notes: "Referred by cardiologist Dr. Johnson. Patient meets initial age and diagnosis criteria.",
       status: "PENDING",
-      submittedById: clientUser.id,
+      submittedById: patientUser.id,
     },
   });
 
-  // Create an audit log entry for the sample intake
+  // Create an audit log entry for the sample application
   await prisma.auditLog.create({
     data: {
       action: "CREATED",
       details: JSON.stringify({ status: "PENDING" }),
-      userId: clientUser.id,
+      userId: patientUser.id,
       intakeId: sampleIntake.id,
     },
   });
 
-  console.log("Created sample intake:");
-  console.log(`  - Intake ID: ${sampleIntake.id}`);
+  console.log("Created sample enrollment application:");
+  console.log(`  - Application ID: ${sampleIntake.id}`);
   console.log(`  - Status: ${sampleIntake.status}`);
-  console.log(`  - Submitted by: ${clientUser.email}`);
+  console.log(`  - Submitted by: ${patientUser.email}`);
 
   console.log("\nSeeding completed!");
 }

@@ -9,18 +9,18 @@ datasource db {
   provider = "sqlite"
 }
 
-// User roles: CLIENT can submit intakes, REVIEWER can review them
+// User roles: PATIENT can submit enrollment applications, REVIEWER can screen them
 enum Role {
-  CLIENT
+  PATIENT
   REVIEWER
 }
 
-// Intake status workflow
+// Clinical trial enrollment application status workflow
 enum IntakeStatus {
-  PENDING
-  IN_REVIEW
-  APPROVED
-  REJECTED
+  PENDING // Application submitted, awaiting review
+  IN_REVIEW // Coordinator is screening the application
+  APPROVED // Application approved for enrollment
+  REJECTED // Application rejected or ineligible
 }
 
 model User {
@@ -44,34 +44,50 @@ model Intake {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 
-  // Client information (some fields are privileged)
-  clientName    String
-  clientEmail   String
-  clientPhone   String // Privileged - should be redacted for non-privileged views
-  dateOfBirth   String // Privileged - should be redacted for non-privileged views
-  ssn           String // Privileged - should be redacted for non-privileged views
-  
-  // Intake details
-  description   String
-  notes         String?
+  // Patient information (PII fields should be redacted in initial screening)
+  clientName  String // Full name of patient applicant
+  clientEmail String // Contact email
+  clientPhone String // Phone number - PII, should be redacted in initial view
+  dateOfBirth String // Date of birth - PII, should be redacted in initial view
+  ssn         String // Social Security Number - PII, should be redacted in initial view
+
+  // Application details
+  description String // Reason for enrollment, medical history, etc.
+  notes       String? // Additional notes from patient or reviewer
 
   // Relations
   submittedById String
-  submittedBy   User     @relation("SubmittedBy", fields: [submittedById], references: [id])
+  submittedBy   User       @relation("SubmittedBy", fields: [submittedById], references: [id])
   reviewerId    String?
-  reviewer      User?    @relation("ReviewedBy", fields: [reviewerId], references: [id])
+  reviewer      User?      @relation("ReviewedBy", fields: [reviewerId], references: [id])
   auditLogs     AuditLog[]
+  documents     Document[] // Supporting documents uploaded by patient
 }
 
 model AuditLog {
   id        String   @id @default(cuid())
-  action    String   // e.g., "CREATED", "STATUS_CHANGED", "VIEWED", "ASSIGNED"
-  details   String?  // JSON string with additional details
+  action    String // e.g., "CREATED", "STATUS_CHANGED", "VIEWED", "ASSIGNED", "DOCUMENT_UPLOADED"
+  details   String? // JSON string with additional details
   createdAt DateTime @default(now())
 
   // Relations
-  userId    String
-  user      User   @relation(fields: [userId], references: [id])
-  intakeId  String
-  intake    Intake @relation(fields: [intakeId], references: [id])
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  intakeId String
+  intake   Intake @relation(fields: [intakeId], references: [id])
+}
+
+// Supporting documents uploaded by patients (medical records, insurance cards, etc.)
+model Document {
+  id          String   @id @default(cuid())
+  fileName    String // Original file name
+  fileType    String // MIME type (e.g., "application/pdf", "image/jpeg")
+  fileSize    Int // File size in bytes
+  filePath    String // Storage path or URL
+  description String? // Optional description of the document
+  createdAt   DateTime @default(now())
+
+  // Relations
+  intakeId String
+  intake   Intake @relation(fields: [intakeId], references: [id], onDelete: Cascade)
 }

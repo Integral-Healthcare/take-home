@@ -1,17 +1,24 @@
 # Integral Take-Home Challenge
 
-Welcome to Integral's Take-Home Challenge! Your task is to build a small web application for managing client intakes with a review workflow.
+## Your Mission
+
+Welcome to Integral's Take-Home Challenge! We need your help building a privacy-conscious clinical trial enrollment system.
+
+**The Scenario:** A pharmaceutical research company is running multiple clinical trials and needs a secure platform where patients can submit enrollment applications. Trial coordinators must screen applications against eligibility criteria while protecting patient privacy during the initial review process. Only after a patient progresses through screening should their full personal information be revealed.
+
+**Your task:** Build a web application that balances thorough data collection with privacy protection, enabling patients to submit comprehensive enrollment applications while allowing trial coordinators to perform initial screenings with masked personally identifiable information (PII).
 
 ## The Challenge
 
 Build a web app where:
 
-- A user can login as a **Client** or **Reviewer**
-- A **Client** submits an **Intake** with personal information
-- The intake appears in a **Review Queue** for reviewers
-- A **Reviewer** can view a **privileged** (full data) vs **redacted** (masked sensitive data) detail view
+- A user can login as a **Patient** or **Reviewer** (Trial Coordinator)
+- A **Patient** submits an enrollment application with personal information and supporting documents
+- The enrollment application appears in a **Review Queue** for trial coordinators
+- A **Reviewer** can toggle between **privileged** (full data) and **redacted** (masked PII) views
 - Reviewers can **update status** (Pending → In Review → Approved/Rejected)
-- The system records an **audit trail** of all actions
+- The system records an **audit trail** of all actions for compliance
+- Patients can upload supporting documents (medical records, insurance cards, etc.)
 
 ## Setup
 
@@ -38,15 +45,17 @@ The project uses Prisma with SQLite. The schema is defined in `prisma/schema.pri
 
 ### User
 
-- `id`, `email`, `name`, `role` (CLIENT or REVIEWER), `organization`
-- Clients submit intakes, Reviewers review them
+- `id`, `email`, `name`, `role` (PATIENT or REVIEWER), `organization`
+- Patients submit enrollment applications, Reviewers (trial coordinators) screen them
 
 ### Intake
 
-- Client information: `clientName`, `clientEmail`, `clientPhone`, `dateOfBirth`, `ssn`
-- Intake details: `description`, `notes`
+- Patient information: `clientName`, `clientEmail`, `clientPhone`, `dateOfBirth`, `ssn`
+  - _Note: These field names use "client" prefix but refer to patient data_
+- Application details: `description`, `notes`
 - Status: `PENDING`, `IN_REVIEW`, `APPROVED`, `REJECTED`
 - Relations: `submittedBy` (User), `reviewer` (User, optional)
+- **Note:** Consider adding a model for document uploads (medical records, insurance cards, prescriptions, ID photos, etc.)
 
 ### AuditLog
 
@@ -58,10 +67,10 @@ The project uses Prisma with SQLite. The schema is defined in `prisma/schema.pri
 
 The database is seeded with two demo users:
 
-| Email               | Role     | Organization        |
-| ------------------- | -------- | ------------------- |
-| `client@demo.com`   | CLIENT   | Organization A      |
-| `reviewer@demo.com` | REVIEWER | Integral (Internal) |
+| Email               | Role     | Organization               |
+| ------------------- | -------- | -------------------------- |
+| `patient@demo.com`  | PATIENT  | (Trial Participant)        |
+| `reviewer@demo.com` | REVIEWER | PharmaCorp Trial Coord.    |
 
 ## Project Structure
 
@@ -70,7 +79,7 @@ src/
 ├── app/
 │   ├── page.tsx              # Home page with challenge overview
 │   ├── intake/
-│   │   └── page.tsx          # Client intake submission page
+│   │   └── page.tsx          # Patient enrollment application page
 │   ├── queue/
 │   │   └── page.tsx          # Reviewer queue page
 │   └── api/
@@ -95,25 +104,34 @@ prisma/
 
 ### Required
 
-1. **User Authentication**: Implement an authentication system for client and reviewer login
-2. **Intake Submission**: Implement the intake form for clients to submit their information
-3. **Review Queue**: Display a list of intakes for reviewers to manage
-4. **Detail View**: Show intake details with privileged vs redacted views for sensitive fields (phone, DOB, SSN)
-5. **Status Updates**: Allow reviewers to change intake status
-6. **Audit Trail**: Record and display all actions taken on intakes
+1. **User Authentication**: Implement an authentication system for patient and reviewer login
+2. **Enrollment Application**: Implement the application form for patients to submit their information
+3. **Document Uploads**: Allow patients to upload supporting documents (medical records, insurance cards, prescriptions, etc.)
+4. **Review Queue**: Display a list of applications for trial coordinators to manage
+5. **Detail View**: Show application details with toggle between privileged and redacted views for sensitive fields (phone, DOB, SSN)
+6. **Status Updates**: Allow reviewers to change application status
+7. **Audit Trail**: Record and display all actions taken on applications for compliance
 
-### Privileged vs Redacted Views
+### Privacy Model: Privileged vs Redacted Views
 
-- **Privileged View**: Shows all data including sensitive fields
-- **Redacted View**: Masks sensitive data (e.g., SSN shows as `***-**-6789`)
-- Consider how to determine which view a user should see
+The system implements a privacy-conscious review process:
+
+- **For Patients**: Always see their own complete, unmasked information
+- **For Reviewers**: Can toggle between two views:
+  - **Redacted View** (default): Masks PII during initial screening (e.g., SSN shows as `***-**-6789`, phone as `***-***-1234`)
+  - **Privileged View**: Shows complete data when reviewer needs full information (e.g., after initial screening passes)
+
+This approach protects patient privacy during the initial eligibility screening while allowing full access when necessary for enrollment processing.
 
 ## Bonus Ideas
 
-- Filter/search in the review queue
+- Filter/search in the review queue (by status, date range, eligibility criteria)
 - Pagination for large datasets
-- Real-time updates
-- Export audit logs
+- Document preview/viewer for uploaded files
+- Real-time updates when applications change status
+- Export audit logs for compliance reporting
+- Bulk actions for reviewers (approve/reject multiple applications)
+- Email notifications when application status changes
 
 ## Available Scripts
 
@@ -136,6 +154,7 @@ Please limit yourself to **4 hours** on this project. We're interested in how yo
   - Total time spent (e.g., "Time spent: 3.5 hours")
   - What you prioritized and why
   - What you would improve with more time
+  - Loom recording preferred
 
 We value quality decision-making over feature completion.
 
@@ -145,12 +164,12 @@ You are welcome to use AI tools (e.g., GitHub Copilot, ChatGPT, Claude) to assis
 
 ## Submission
 
-Once you've completed the challenge, please commit your changes, push them to your own GitHub repository, and share the link with us. Alternatively, emailing a zip file of the repository is acceptable.
+Once you've completed the challenge, please commit your changes, push them to your own forked GitHub repository, and share the link with us. Alternatively, emailing a zip file of the repository is acceptable.
 
 ## FAQs
 
 **Q: Can I modify the Prisma schema?**
-A: Yes! Feel free to modify the schema to better suit your approach.
+A: Yes! Feel free to modify the schema to better suit your approach. Note, once you modify the schema file you'll have to issue a migration via `npx prisma migrate dev` and restart your server.
 
 **Q: Can I add additional libraries?**
 A: Yes, but keep in mind the time constraint. The existing setup should be sufficient for the core requirements.
