@@ -1,14 +1,14 @@
 # Integral Take-Home Challenge
 
-Welcome to Integral's Take-Home Challenge! Your task is to build a small web application for managing client intakes with a review workflow.
+Welcome to Integral's Take-Home Challenge! Your task is to build a small web application for managing client (customer) intake questionaires and forms, as well as a reviewer workflow.
 
 ## The Challenge
 
 Build a web app where:
 
 - A user can login as a **Client** or **Reviewer**
-- A **Client** submits an **Intake** with personal information
-- The intake appears in a **Review Queue** for reviewers
+- A **Client** submits an **Intake** form with personal information
+- The intake form result appears in a **Review Queue** for reviewers
 - A **Reviewer** can view a **privileged** (full data) vs **redacted** (masked sensitive data) detail view
 - Reviewers can **update status** (Pending → In Review → Approved/Rejected)
 - The system records an **audit trail** of all actions
@@ -145,12 +145,12 @@ You are welcome to use AI tools (e.g., GitHub Copilot, ChatGPT, Claude) to assis
 
 ## Submission
 
-Once you've completed the challenge, please commit your changes, push them to your own GitHub repository, and share the link with us. Alternatively, emailing a zip file of the repository is acceptable.
+Once you've completed the challenge, please commit your changes, push them to your own forked GitHub repository, and share the link with us. Alternatively, emailing a zip file of the repository is acceptable.
 
 ## FAQs
 
 **Q: Can I modify the Prisma schema?**
-A: Yes! Feel free to modify the schema to better suit your approach.
+A: Yes! Feel free to modify the schema to better suit your approach. Note, once you modify the schema file you'll have to issue a migration via `npx prisma migrate dev` and restart your server.
 
 **Q: Can I add additional libraries?**
 A: Yes, but keep in mind the time constraint. The existing setup should be sufficient for the core requirements.
