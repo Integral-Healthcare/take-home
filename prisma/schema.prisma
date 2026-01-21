@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// User roles: CLIENT can submit intakes, REVIEWER can review them
+enum Role {
+  CLIENT
+  REVIEWER
+}
+
+// Intake status workflow
+enum IntakeStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  role         Role
+  organization String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  submittedIntakes Intake[]   @relation("SubmittedBy")
+  reviewedIntakes  Intake[]   @relation("ReviewedBy")
+  auditLogs        AuditLog[]
+}
+
+model Intake {
+  id        String       @id @default(cuid())
+  status    IntakeStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  // Client information (some fields are privileged)
+  clientName    String
+  clientEmail   String
+  clientPhone   String // Privileged - should be redacted for non-privileged views
+  dateOfBirth   String // Privileged - should be redacted for non-privileged views
+  ssn           String // Privileged - should be redacted for non-privileged views
+  
+  // Intake details
+  description   String
+  notes         String?
+
+  // Relations
+  submittedById String
+  submittedBy   User     @relation("SubmittedBy", fields: [submittedById], references: [id])
+  reviewerId    String?
+  reviewer      User?    @relation("ReviewedBy", fields: [reviewerId], references: [id])
+  auditLogs     AuditLog[]
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g., "CREATED", "STATUS_CHANGED", "VIEWED", "ASSIGNED"
+  details   String?  // JSON string with additional details
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId    String
+  user      User   @relation(fields: [userId], references: [id])
+  intakeId  String
+  intake    Intake @relation(fields: [intakeId], references: [id])
+}
