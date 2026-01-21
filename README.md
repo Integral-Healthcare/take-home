@@ -5,6 +5,8 @@ Welcome to Integral's Take-Home Challenge! Your task is to build a small web app
 ## The Challenge
 
 Build a web app where:
+
+- A user can login as a **Client** or **Reviewer**
 - A **Client** submits an **Intake** with personal information
 - The intake appears in a **Review Queue** for reviewers
 - A **Reviewer** can view a **privileged** (full data) vs **redacted** (masked sensitive data) detail view
@@ -27,16 +29,19 @@ Build a web app where:
 The project uses Prisma with SQLite. The schema is defined in `prisma/schema.prisma`:
 
 ### User
+
 - `id`, `email`, `name`, `role` (CLIENT or REVIEWER), `organization`
 - Clients submit intakes, Reviewers review them
 
 ### Intake
+
 - Client information: `clientName`, `clientEmail`, `clientPhone`, `dateOfBirth`, `ssn`
 - Intake details: `description`, `notes`
 - Status: `PENDING`, `IN_REVIEW`, `APPROVED`, `REJECTED`
 - Relations: `submittedBy` (User), `reviewer` (User, optional)
 
 ### AuditLog
+
 - `action`: Type of action (CREATED, STATUS_CHANGED, VIEWED, ASSIGNED)
 - `details`: JSON string with additional context
 - Relations: `user` (who performed the action), `intake` (which intake)
@@ -45,9 +50,9 @@ The project uses Prisma with SQLite. The schema is defined in `prisma/schema.pri
 
 The database is seeded with two demo users:
 
-| Email | Role | Organization |
-|-------|------|--------------|
-| `client@demo.com` | CLIENT | Organization A |
+| Email               | Role     | Organization        |
+| ------------------- | -------- | ------------------- |
+| `client@demo.com`   | CLIENT   | Organization A      |
 | `reviewer@demo.com` | REVIEWER | Integral (Internal) |
 
 ## Project Structure
@@ -68,38 +73,38 @@ src/
 │       └── users/
 │           └── route.ts      # GET users
 ├── components/
-│   ├── IntakeForm.tsx        # Intake submission form
-│   ├── ReviewQueue.tsx       # Queue list component
-│   ├── IntakeDetail.tsx      # Detail view (privileged/redacted)
-│   └── AuditLog.tsx          # Audit trail display
+│   ├── AuditLog.tsx          # Audit trail display
+│   └── Add additional components as needed...
 ├── lib/
 │   └── prisma.ts             # Prisma client singleton
 prisma/
 ├── schema.prisma             # Database schema
 ├── seed.ts                   # Seed script
-└── dev.db                    # SQLite database (committed)
+└── dev.db                    # SQLite database
 ```
 
 ## Goals
 
 ### Required
-1. **Intake Submission**: Implement the intake form for clients to submit their information
-2. **Review Queue**: Display a list of intakes for reviewers to manage
-3. **Detail View**: Show intake details with privileged vs redacted views for sensitive fields (phone, DOB, SSN)
-4. **Status Updates**: Allow reviewers to change intake status
-5. **Audit Trail**: Record and display all actions taken on intakes
+
+1. **User Authentication**: Implement an authentication system for client and reviewer login
+2. **Intake Submission**: Implement the intake form for clients to submit their information
+3. **Review Queue**: Display a list of intakes for reviewers to manage
+4. **Detail View**: Show intake details with privileged vs redacted views for sensitive fields (phone, DOB, SSN)
+5. **Status Updates**: Allow reviewers to change intake status
+6. **Audit Trail**: Record and display all actions taken on intakes
 
 ### Privileged vs Redacted Views
+
 - **Privileged View**: Shows all data including sensitive fields
 - **Redacted View**: Masks sensitive data (e.g., SSN shows as `***-**-6789`)
 - Consider how to determine which view a user should see
 
 ## Bonus Ideas
-- User authentication/session management
+
 - Filter/search in the review queue
 - Pagination for large datasets
 - Real-time updates
-- Mobile responsiveness
 - Export audit logs
 
 ## Available Scripts
@@ -113,7 +118,22 @@ prisma/
 
 ## Time Allocation
 
-This challenge is designed to be completed in about 90 minutes. We're not just looking for completion - how you approach the problem and the decisions you make will also be considered.
+Please limit yourself to **4 hours** on this project. We're interested in how you approach problems and prioritize work within time constraints, not just completion.
+
+**Important:**
+
+- **Track your time**: Note when you start and stop working
+- **Commit frequently**: Make regular git commits as you work. This helps us understand your development process
+- **Include in your submission**:
+  - Total time spent (e.g., "Time spent: 3.5 hours")
+  - What you prioritized and why
+  - What you would improve with more time
+
+We value quality decision-making over feature completion.
+
+## AI Disclaimer
+
+You are welcome to use AI tools (e.g., GitHub Copilot, ChatGPT, Claude) to assist with this challenge. However, you are fully responsible for all code submitted. We will evaluate the quality, architecture, and implementation of your solution regardless of how it was created. Make sure you understand and can explain any code you submit.
 
 ## Submission
 
@@ -128,6 +148,6 @@ A: Yes! Feel free to modify the schema to better suit your approach.
 A: Yes, but keep in mind the time constraint. The existing setup should be sufficient for the core requirements.
 
 **Q: How should I handle authentication?**
-A: For simplicity, you can use a basic approach (e.g., user selection dropdown, query parameter). Full authentication is a bonus.
+A: For simplicity, you can use a basic approach (e.g., credentials). Full authentication is a bonus.
 
 We wish you the best of luck and look forward to reviewing your solution!

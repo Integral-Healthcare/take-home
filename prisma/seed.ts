@@ -1,6 +1,12 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaLibSql({
+  url: `file:${process.env.DATABASE_URL!.replace("file:", "")}`,
+});
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("Seeding database...");
@@ -30,8 +36,12 @@ async function main() {
   });
 
   console.log("Created users:");
-  console.log(`  - ${clientUser.email} (${clientUser.role}, ${clientUser.organization})`);
-  console.log(`  - ${reviewerUser.email} (${reviewerUser.role}, ${reviewerUser.organization})`);
+  console.log(
+    `  - ${clientUser.email} (${clientUser.role}, ${clientUser.organization})`
+  );
+  console.log(
+    `  - ${reviewerUser.email} (${reviewerUser.role}, ${reviewerUser.organization})`
+  );
 
   // Create a sample intake for demonstration
   const sampleIntake = await prisma.intake.create({
