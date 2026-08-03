@@ -1,21 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { resolveDatabaseUrl } from "@/lib/databaseUrl";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
 function createPrismaClient() {
-  const url = process.env.DATABASE_URL;
-
-  if (!url) {
-    throw new Error(
-      "DATABASE_URL is not set. Did you run `cp .env.example .env`?"
-    );
-  }
-
   // Prisma 7 talks to SQLite through a driver adapter rather than a query engine.
-  return new PrismaClient({ adapter: new PrismaLibSql({ url }) });
+  return new PrismaClient({
+    adapter: new PrismaLibSql({ url: resolveDatabaseUrl() }),
+  });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();

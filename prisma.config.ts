@@ -1,5 +1,6 @@
 import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
+import { resolveDatabaseUrl } from "./src/lib/databaseUrl";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -10,6 +11,6 @@ export default defineConfig({
     seed: 'ts-node --compiler-options {"module":"CommonJS","types":["node"]} prisma/seed.ts',
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    url: resolveDatabaseUrl(),
   },
 });

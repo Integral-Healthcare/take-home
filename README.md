@@ -196,6 +196,24 @@ You are welcome to use AI tools (e.g., GitHub Copilot, ChatGPT, Claude) to assis
 
 Once you've completed the challenge, please commit your changes, push them to your own forked GitHub repository, and share the link with us. Alternatively, emailing a zip file of the repository is acceptable — if you zip it, please exclude `node_modules/` and `.next/`.
 
+## Troubleshooting
+
+**`Invalid DATABASE_URL` / `P1013` / `URL_SCHEME_NOT_SUPPORTED`**
+
+Your shell is exporting its own `DATABASE_URL`, which silently wins over the one in `.env` —
+neither `dotenv` nor Next.js overrides a variable that is already set. Check with:
+
+```bash
+echo $DATABASE_URL
+```
+
+If it prints anything other than `file:./dev.db`, either `unset DATABASE_URL` in this shell
+(or remove the export from your shell profile), or scope it per command:
+
+```bash
+DATABASE_URL="file:./dev.db" npm run dev
+```
+
 ## FAQs
 
 **Q: Can I modify the Prisma schema?**
